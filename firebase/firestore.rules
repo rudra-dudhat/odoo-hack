@@ -1,0 +1,63 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAuthenticated() { return request.auth != null; }
+    function isAdmin() { return isAuthenticated() && request.auth.token.role == 'admin'; }
+    function isManagerOrAdmin() {
+      return isAuthenticated() &&
+        (request.auth.token.role == 'admin' || request.auth.token.role == 'manager');
+    }
+
+    // All writes go through Python backend (Admin SDK), which bypasses rules.
+    // Rules here = read-only client access + second-line defence.
+
+    match /departments/{id}        { allow read: if isAuthenticated(); allow write: if false; }
+    match /employees/{id}          { allow read: if isAuthenticated(); allow write: if false; }
+    match /roles/{id}              { allow read: if isAuthenticated(); allow write: if false; }
+    match /permissions/{id}        { allow read: if isAuthenticated(); allow write: if false; }
+    match /assetCategories/{id}    { allow read: if isAuthenticated(); allow write: if false; }
+    match /assets/{id}             { allow read: if isAuthenticated(); allow write: if false; }
+    match /assetAllocations/{id}   { allow read: if isAuthenticated(); allow write: if false; }
+    match /sharedResources/{id}    { allow read: if isAuthenticated(); allow write: if false; }
+    match /resourceBookings/{id}   { allow read: if isAuthenticated(); allow write: if false; }
+    match /auditCycles/{id}        { allow read: if isAuthenticated(); allow write: if false; }
+    match /auditLogs/{id}          { allow read: if isAdmin();         allow write: if false; }
+    match /dashboardAggregates/{id}{ allow read: if isManagerOrAdmin();allow write: if false; }
+    match /counters/{id}           { allow read, write: if false; }
+
+    match /maintenanceRequests/{id} {
+      allow read: if isAuthenticated(); allow write: if false;
+      match /approvals/{aid} { allow read: if isAuthenticated(); allow write: if false; }
+      match /logs/{lid}      { allow read: if isAuthenticated(); allow write: if false; }
+    }
+
+    match /auditCycles/{id} {
+      allow read: if isAuthenticated(); allow write: if false;
+      match /reports/{rid} { allow read: if isAuthenticated(); allow write: if false; }
+    }
+
+    // Notifications: users can read own + mark as read
+    match /notifications/{id} {
+      allow read: if isAuthenticated() &&
+        (isAdmin() || resource.data.recipientId == request.auth.uid);
+      allow update: if isAuthenticated()
+        && resource.data.recipientId == request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys()
+             .hasOnly(['isRead','readAt','updatedAt','updatedBy']);
+      allow create, delete: if false;
+    }
+
+    // Archive collections
+    match /resourceBookingsArchive/{id}   { allow read: if isAdmin(); allow write: if false; }
+    match /maintenanceRequestsArchive/{id}{ allow read: if isAdmin(); allow write: if false; }
+    match /notificationsArchive/{id}      {
+      allow read: if isAuthenticated() &&
+        (isAdmin() || resource.data.recipientId == request.auth.uid);
+      allow write: if false;
+    }
+
+    match /{document=**} { allow read, write: if false; }
+  }
+}
