@@ -1,29 +1,40 @@
-from fastapi import APIRouter, HTTPException
-from src.infrastructure.firestore.client import db
+from fastapi import APIRouter, Depends, Path
+from src.application.dtos.base import SingleResponse
+from src.application.dtos.dashboard import DashboardRecomputeRequest
+from src.domain.entities.employee import Employee
+from src.domain.entities.dashboard_aggregate import DashboardAggregate
+from src.presentation.dependencies.rbac import require_permission
+from src.application.services.dashboard_service import DashboardService, get_dashboard_service
+from src.shared.errors import NotFoundError
 
 router = APIRouter()
 
+@router.get(
+    "/{id}",
+    response_model=SingleResponse[DashboardAggregate],
+    dependencies=[Depends(require_permission("perm_dashboard_view"))]
+)
+def get_dashboard_aggregate(
+    aggregate_id: str = Path(..., alias="id"),
+    service: DashboardService = Depends(get_dashboard_service)
+):
+    agg = service.get_aggregate(aggregate_id)
+    if not agg:
+        raise NotFoundError(f"Dashboard aggregate '{aggregate_id}' not found")
+    return SingleResponse(data=agg)
 
-@router.get("", tags=["Dashboard"])
-async def get_dashboard_summary():
-    try:
-        assets_ref = db.collection("assets")
-        allocations_ref = db.collection("assetAllocations")
-        bookings_ref = db.collection("resourceBookings")
-        maintenance_ref = db.collection("maintenanceRequests")
-
-        total_assets = sum(1 for doc in assets_ref.stream() if not doc.to_dict().get("isDeleted", False))
-        active_allocations = sum(1 for doc in allocations_ref.stream() if doc.to_dict().get("status") == "active")
-        overdue_allocations = sum(1 for doc in allocations_ref.stream() if doc.to_dict().get("status") == "overdue")
-        bookings_today = sum(1 for doc in bookings_ref.stream() if doc.to_dict().get("status") == "confirmed")
-        open_maintenance_requests = sum(1 for doc in maintenance_ref.stream() if doc.to_dict().get("status") in {"pending", "approved", "in_progress"})
-
-        return {
-            "totalAssets": total_assets,
-            "activeAllocations": active_allocations,
-            "overdueAllocations": overdue_allocations,
-            "bookingsToday": bookings_today,
-            "openMaintenanceRequests": open_maintenance_requests,
-        }
-    except Exception as exc:
-        raise HTTPException(status_code=500, detail="Failed to load dashboard summary") from exc
+@router.post(
+    "/recompute",
+    response_model=SingleResponse[DashboardAggregate]
+)
+def recompute_dashboard_aggregate(
+    payload: DashboardRecomputeRequest,
+    current_user: Employee = Depends(require_permission("perm_departments_manage")),
+    service: DashboardService = Depends(get_dashboard_service)
+):
+    agg = service.recompute_aggregate(
+        scope=payload.scope,
+        scope_ref_id=payload.scope_ref_id,
+        actor_id=current_user.id
+    )
+    return SingleResponse(data=agg)
