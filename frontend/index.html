@@ -1,11 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AssetTitan</title>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AssetTitan | ERP</title>
+  
+  <!-- Google Fonts: Outfit and Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body>
-    <div></div>
+<body class="bg-slate-900 text-slate-100 font-inter antialiased overflow-hidden">
+  
+  <div id="app" class="flex h-screen w-full relative">
+    <!-- UI gets injected here by JS -->
+  </div>
+
+  <script type="module" src="/src/app.js"></script>
+  
+  <!-- Initialize icons after UI mounts, handled in app.js, but standard init here for initial icons -->
+  <script>
+    lucide.createIcons();
+  </script>
 </body>
 </html>

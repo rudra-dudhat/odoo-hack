@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from src.config.settings import settings
 from src.presentation.middleware.logging_middleware import LoggingMiddleware
 from src.presentation.middleware.error_handler import setup_exception_handlers
@@ -32,6 +33,13 @@ def create_app() -> FastAPI:
     )
     
     # 1. Register Middleware
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
     app.add_middleware(LoggingMiddleware)
     
     # 2. Register Custom Exception Handlers

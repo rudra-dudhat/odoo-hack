@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+@theme {
+  --font-inter: 'Inter', sans-serif;
+  --font-outfit: 'Outfit', sans-serif;
+}
+
+/* Base resets & utilities */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Glassmorphism classes */
+@utility glass {
+  background-color: rgba(30, 41, 59, 0.7); /* slate-800 with opacity */
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@utility glass-panel {
+  background-color: rgba(15, 23, 42, 0.75); /* slate-900 */
+  backdrop-filter: blur(16px);
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+@utility glass-card {
+  background: linear-gradient(145deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.6) 100%);
+  backdrop-filter: blur(10px);
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+@utility glass-card-hover {
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+}
+
+/* Animations */
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@utility animate-slide-in {
+  animation: slideIn 0.3s ease-out forwards;
+}
+
+/* Custom Scrollbar for dark theme */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 1);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(51, 65, 85, 1);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(71, 85, 105, 1);
+}
+
+/* Font utilities based on theme config variables */
+.font-inter {
+  font-family: var(--font-inter);
+}
+.font-outfit {
+  font-family: var(--font-outfit);
+}

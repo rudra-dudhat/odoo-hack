@@ -1,0 +1,12 @@
+Metadata-Version: 2.4
+Name: backend
+Version: 0.1.0
+Summary: Add your description here
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+Requires-Dist: fastapi>=0.128.8
+Requires-Dist: firebase-admin>=7.5.0
+Requires-Dist: pydantic[email]>=2.13.4
+Requires-Dist: python-dotenv>=1.2.2
+Requires-Dist: python-jose[cryptography]>=3.5.0
+Requires-Dist: uvicorn>=0.39.0
