@@ -1,0 +1,16 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.env
+.env.*
+
+# Firebase — NEVER COMMIT THIS
+backend/serviceAccountKey.json
+
+# macOS
+.DS_Store
+
+# Node
+node_modules/

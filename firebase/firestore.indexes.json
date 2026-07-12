@@ -1,0 +1,23 @@
+{
+  "indexes": [
+    { "collectionGroup": "employees",           "queryScope": "COLLECTION",       "fields": [{"fieldPath":"departmentId","order":"ASCENDING"},{"fieldPath":"status","order":"ASCENDING"},{"fieldPath":"fullName","order":"ASCENDING"}] },
+    { "collectionGroup": "assets",              "queryScope": "COLLECTION",       "fields": [{"fieldPath":"departmentId","order":"ASCENDING"},{"fieldPath":"status","order":"ASCENDING"},{"fieldPath":"updatedAt","order":"DESCENDING"}] },
+    { "collectionGroup": "assets",              "queryScope": "COLLECTION",       "fields": [{"fieldPath":"categoryId","order":"ASCENDING"},{"fieldPath":"status","order":"ASCENDING"},{"fieldPath":"createdAt","order":"DESCENDING"}] },
+    { "collectionGroup": "assets",              "queryScope": "COLLECTION",       "fields": [{"fieldPath":"status","order":"ASCENDING"},{"fieldPath":"isDeleted","order":"ASCENDING"},{"fieldPath":"assetTag","order":"ASCENDING"}] },
+    { "collectionGroup": "assetAllocations",    "queryScope": "COLLECTION",       "fields": [{"fieldPath":"assetId","order":"ASCENDING"},{"fieldPath":"status","order":"ASCENDING"},{"fieldPath":"allocatedAt","order":"DESCENDING"}] },
+    { "collectionGroup": "assetAllocations",    "queryScope": "COLLECTION",       "fields": [{"fieldPath":"employeeId","order":"ASCENDING"},{"fieldPath":"status","order":"ASCENDING"},{"fieldPath":"allocatedAt","order":"DESCENDING"}] },
+    { "collectionGroup": "resourceBookings",    "queryScope": "COLLECTION",       "fields": [{"fieldPath":"resourceId","order":"ASCENDING"},{"fieldPath":"status","order":"ASCENDING"},{"fieldPath":"startTime","order":"ASCENDING"}] },
+    { "collectionGroup": "resourceBookings",    "queryScope": "COLLECTION",       "fields": [{"fieldPath":"employeeId","order":"ASCENDING"},{"fieldPath":"startTime","order":"DESCENDING"}] },
+    { "collectionGroup": "resourceBookings",    "queryScope": "COLLECTION",       "fields": [{"fieldPath":"status","order":"ASCENDING"},{"fieldPath":"startTime","order":"ASCENDING"}] },
+    { "collectionGroup": "maintenanceRequests", "queryScope": "COLLECTION",       "fields": [{"fieldPath":"assetId","order":"ASCENDING"},{"fieldPath":"status","order":"ASCENDING"},{"fieldPath":"createdAt","order":"DESCENDING"}] },
+    { "collectionGroup": "maintenanceRequests", "queryScope": "COLLECTION",       "fields": [{"fieldPath":"status","order":"ASCENDING"},{"fieldPath":"priority","order":"DESCENDING"},{"fieldPath":"createdAt","order":"ASCENDING"}] },
+    { "collectionGroup": "maintenanceRequests", "queryScope": "COLLECTION",       "fields": [{"fieldPath":"requestedBy","order":"ASCENDING"},{"fieldPath":"status","order":"ASCENDING"},{"fieldPath":"createdAt","order":"DESCENDING"}] },
+    { "collectionGroup": "auditCycles",         "queryScope": "COLLECTION",       "fields": [{"fieldPath":"status","order":"ASCENDING"},{"fieldPath":"scheduledStart","order":"ASCENDING"}] },
+    { "collectionGroup": "reports",             "queryScope": "COLLECTION_GROUP", "fields": [{"fieldPath":"assetId","order":"ASCENDING"},{"fieldPath":"auditedAt","order":"DESCENDING"}] },
+    { "collectionGroup": "logs",                "queryScope": "COLLECTION_GROUP", "fields": [{"fieldPath":"performedBy","order":"ASCENDING"},{"fieldPath":"createdAt","order":"DESCENDING"}] },
+    { "collectionGroup": "notifications",       "queryScope": "COLLECTION",       "fields": [{"fieldPath":"recipientId","order":"ASCENDING"},{"fieldPath":"isRead","order":"ASCENDING"},{"fieldPath":"createdAt","order":"DESCENDING"}] },
+    { "collectionGroup": "auditLogs",           "queryScope": "COLLECTION",       "fields": [{"fieldPath":"entityType","order":"ASCENDING"},{"fieldPath":"entityId","order":"ASCENDING"},{"fieldPath":"createdAt","order":"DESCENDING"}] },
+    { "collectionGroup": "auditLogs",           "queryScope": "COLLECTION",       "fields": [{"fieldPath":"performedBy","order":"ASCENDING"},{"fieldPath":"createdAt","order":"DESCENDING"}] }
+  ],
+  "fieldOverrides": []
+}
