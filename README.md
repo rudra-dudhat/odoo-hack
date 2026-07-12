@@ -1,48 +1,68 @@
-# odoo-hack
+# Enterprise Asset & Resource Management ERP (AssetTitan)
 
-## Overview
+This repository contains a full-stack Enterprise Resource Planning (ERP) application built with a FastAPI Python backend, a Vite + Tailwind CSS v4 frontend, and Firebase for data storage and authentication.
 
-This repository contains a small Firebase-backed project with a frontend and Firestore configuration.
+---
 
-- `firebase/firestore.rules` — Firestore security rules for authenticated read access and admin/manager restrictions.
-- `firebase/firestore.indexes.json` — Firestore composite index definitions for collections such as `employees`, `assets`, `resourceBookings`, `maintenanceRequests`, and `notifications`.
-- `frontend/index.html` — Simple frontend entry point.
-- `frontend/style.css` — Tailwind CSS configuration and stylesheet.
+## 🚀 How to Run the Project Locally
 
-## Firebase Setup
+To run the full website, you need to start two separate servers: the **Backend** (FastAPI) and the **Frontend** (Vite). 
 
-This project uses Firestore for read-only client access and structured indexes.
+Follow these steps every time you want to start the project.
 
-### Firestore rules
+### Step 1: Start the Backend Server
+The backend handles API requests and communicates securely with your Firebase database using the `serviceAccountKey.json`.
 
-The security rules allow:
-- authenticated users to read most data collections,
-- admin users to read audit logs and archive collections,
-- manager/admin users to read dashboard aggregates,
-- no client writes (all writes are intended to go through a trusted backend or Admin SDK).
+1. Open a new terminal window.
+2. Navigate to the `backend` folder:
+   ```bash
+   cd backend
+   ```
+3. Activate your Python virtual environment:
+   - **Windows:** `.\venv\Scripts\activate`
+   - **Mac/Linux:** `source venv/bin/activate`
+4. Start the server:
+   ```bash
+   uvicorn src.main:app --reload --port 8000
+   ```
+   *Your backend is now running at `http://localhost:8000`*
 
-### Firestore indexes
+### Step 2: Start the Frontend Server
+The frontend handles the beautiful User Interface and connects to your local backend.
 
-The `firebase/firestore.indexes.json` file defines required composite indexes for queries across collections like:
-- `employees`
-- `assets`
-- `assetAllocations`
-- `resourceBookings`
-- `maintenanceRequests`
-- `auditCycles`
-- `notifications`
-- `auditLogs`
+1. Open a **second, separate** terminal window.
+2. Navigate to the `frontend` folder:
+   ```bash
+   cd frontend
+   ```
+3. Start the Vite development server:
+   ```bash
+   npm run dev
+   ```
+   *Your frontend is now running at `http://localhost:5173`*
 
-## Deploying Firebase configuration
+### Step 3: View the App
+- Open your web browser and go to **[http://localhost:5173](http://localhost:5173)** to use the application.
+- To view the interactive Backend API documentation, go to **[http://localhost:8000/docs](http://localhost:8000/docs)**.
 
-If you have the Firebase CLI installed and your project initialized, deploy the Firestore rules and indexes with:
+---
 
-```bash
-firebase deploy --only firestore:rules,firestore:indexes
-```
+## 📁 Project Structure
 
-## Notes
+### `/backend`
+- Built with **FastAPI** and Python 3.12+.
+- Uses Firebase Admin SDK.
+- Relies on `.env` for `FIREBASE_PROJECT_ID` and `FIREBASE_STORAGE_BUCKET`.
 
-- The frontend currently includes only a basic `index.html` shell.
-- The Firestore config files are intended to support an Odoo-like asset and maintenance tracking system.
-- If you add Firebase initialization or authentication in the frontend, make sure to keep your Firebase API keys and project settings secure.
+### `/frontend`
+- Built with **Vanilla JS**, HTML, and CSS.
+- Uses **Vite** for the build system.
+- Styled with **Tailwind CSS v4** featuring a custom glassmorphism design system.
+- The router and entry point live in `src/app.js`.
+
+### `/firebase`
+- `firestore.rules` — Security rules restricting client-side database writes.
+- `firestore.indexes.json` — Composite index definitions for complex dashboard queries.
+
+## 🔒 Firebase Configuration
+Make sure the `serviceAccountKey.json` is placed inside the `backend` folder, and the `backend/.env` file is properly configured with your specific project ID.
